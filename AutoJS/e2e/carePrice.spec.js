@@ -4,7 +4,6 @@ test('carPrice', async ({ page }) => {
   // test.slow();
   await page.goto('https://carprice.ru/');
 
-  // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Выкуп автомобилей в Москве и других городах России – «CarPrice» – быстро, дорого, надежно/);
 
   const logo = page.locator('.AppHeader_logo__n_Rh2');
