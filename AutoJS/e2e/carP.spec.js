@@ -5,7 +5,6 @@ test('carPrice', async ({ page }) => {
   await page.goto('https://carprice.ru/');
 
   await expect(page).toHaveTitle(/Выкуп автомобилей в Москве и других городах России – «CarPrice» – быстро, дорого, надежно/);
-
   const logo = page.locator('.AppHeader_logo__n_Rh2');
   await expect((logo).first()).toBeVisible();
 
@@ -47,10 +46,21 @@ test('carPrice', async ({ page }) => {
   await (numberAuto).fill('');
   await (typeMail).fill('');
 
-  await (numberAuto).fill('П098АА117'); //* Проверка валидных данных
-  await (typeMail).fill('dscdc@mail.ru');
+  await (numberAuto).fill('ы869фф987'); //* Проверка невалидных данных (мейл с русскими буквами)
+  await (typeMail).fill('йогурт@gmail.ru')
   await (passBut).click();
+  await passBut.isDisabled();
+  await (numberAuto).fill('');
+  await (typeMail).fill('');
+
+  await (numberAuto).fill('П098АА117'); //* Проверка валидных данных 
+  await (typeMail).fill('dscdc@mail.ru');
+  const iIcon = page.locator('i').first();
+  await (iIcon).toBeVisible();
+  await (iIcon).toHaveCSS('background', 'rgb(128, 212, 166) none repeat scroll 0% 0% / auto padding-box border-box');
   await passBut.toBeEditable();
+  await (passBut).click();
+  
 
   await page.locator('.Step1_input__mQdy_', '.Step1_inputValid__rV4nz')
   .not.toBeVisible(); //* Проверка, что перешли на следующую форму заполнения

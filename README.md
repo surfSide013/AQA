@@ -1,6 +1,77 @@
-## CarPrice
+# carP 
 
-### 1№
+#### В этом тесте сделал проверку на форму заполнения Легкового автомобиля 
+
+#### Основные проверки были сделаны на две формы, Номер автомобиля и Мейл c применением техник тест-дизайна
+Граничные значения 
+Эквивалентное разбиение
+
+
+Ожидаем проверку на тайтл и логотип
+>await expect(page).toHaveTitle(/Выкуп автомобилей в Москве и других городах России – «CarPrice» – быстро, дорого, надежно/);
+  const logo = page.locator('.AppHeader_logo__n_Rh2');
+  await expect((logo).first()).toBeVisible();
+
+Проверка на появление формы заполнения
+>const box =  page.locator('.Step1_form__8QaMW'); //* Ожидаем полной загрузки форм 
+await expect(box).toBeVisible();
+
+Ожидание кнопки + проверка дизейбл
+>const passBut = page.locator('.baseStyles_buttonGetPriceMinute__8irsE'); 
+  await expect(passBut).toBeVisible();
+  await (passBut).click();
+  await passBut.isDisabled();
+
+Проверка присутствия формы легкового автомобиля + дизейбл кнопки при пустых значениях 
+  >await expect(page.locator('.Step1_activeItem__0s1DK')).toHaveText('Легковой');
+  await passBut.isDisabled();
+
+Проверка, что кнопка заблокирована при вводе только одного поля(номер) ввода
+  >const numberAuto = page.getByPlaceholder('A 000 AA 000');
+  await (numberAuto).fill("О987ВС09");
+  await passBut.isDisabled();
+  await (passBut).click();
+  await (numberAuto).fill('');
+
+Проверка, что кнопка заблокирована при вводе только одного поля(мейл) ввода
+  >const typeMail = page.getByPlaceholder('Email для отправки оценки авто'); 
+  await (typeMail).fill('sssdsdsd@gmail.com');
+  await passBut.isDisabled();
+  await (passBut).click();
+  await (typeMail).fill('');
+
+Проверка невалидных данных и что кнопка заблокирована 
+  >await (numberAuto).fill('A777IO878009809889лолрр');
+  await (typeMail).fill('vbvwb.com')
+  await (passBut).click();
+  await passBut.isDisabled();
+  await (numberAuto).fill('');
+  await (typeMail).fill('');
+
+Проверка невалидных данных (мейл с русскими буквами)  
+  await (numberAuto).fill('ы869фф987');
+  await (typeMail).fill('йогурт@gmail.ru')
+  await (passBut).click();
+  await passBut.isDisabled();
+  await (numberAuto).fill('');
+  await (typeMail).fill('');
+
+Проверка валидных данных по активной кнопки + проверка бордера
+  await (numberAuto).fill('П098АА117'); 
+  await (typeMail).fill('dscdc@mail.ru');
+  const iIcon = page.locator('i').first();
+  await (iIcon).toBeVisible();
+  await (iIcon).toHaveCSS('background', 'rgb(128, 212, 166) none repeat scroll 0% 0% / auto padding-box border-box');
+  await passBut.toBeEditable();
+  await (passBut).click();
+  
+
+Проверка, что перешли на следующую форму заполнения
+  await page.locator('.Step1_input__mQdy_', '.Step1_inputValid__rV4nz')
+  .not.toBeVisible();
+
+
+## CarPrice
 
 >await page.goto('https://carprice.ru/');
 
